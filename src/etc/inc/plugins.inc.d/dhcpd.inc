@@ -1334,19 +1334,19 @@ function dhcpd_dhcp6_configure($verbose = false, $blacklist = array())
                         'from' => make_ipv6_64_address($ifcfgipv6, $dhcpdv6cfg[$ifname]['range']['from']),
                         'to' => make_ipv6_64_address($ifcfgipv6, $dhcpdv6cfg[$ifname]['range']['to']),
                     );
-                }          
+                }
                                                                                                     
                 if (!empty($dhcpdv6cfg[$ifname]['prefixrange']['from']) && !empty($dhcpdv6cfg[$ifname]['prefixrange']['to'])) {
                     $pdlen = calculate_ipv6_delegation_length($config['interfaces'][$ifname]['track6-interface']);
                     $pd_base = Net_IPv6::getNetmask($ifcfgipv6, 64 - $pdlen); 
                                                                                     
-                    $pd_from_suffix = inet_pton($dhcpdv6cfg[$ifname]['prefixrange']['from']);
+                    $pd_from_suffix = inet_pton($dhcpdv6cfg[$ifname]['prefixrange']['from'] . ':0:0:0:0');
                     $pd_from_bin = inet_pton($pd_base) | $pd_from_suffix;           
-                    $pd_to_suffix = inet_pton($dhcpdv6cfg[$ifname]['prefixrange']['to']);
+                    $pd_to_suffix = inet_pton($dhcpdv6cfg[$ifname]['prefixrange']['to'] . ':0:0:0:0');
                     $pd_to_bin = inet_pton($pd_base) | $pd_to_suffix;                                           
                     $dhcpdv6cfg[$ifname]['prefixrange']['from'] = inet_ntop($pd_from_bin);// Net_IPv6::compress($ipv6_from_pd_from);
                     $dhcpdv6cfg[$ifname]['prefixrange']['to'] = inet_ntop($pd_to_bin); //Net_IPv6::compress($ipv6_from_pd_to);
-                } 
+                }
             }
         }
     }
